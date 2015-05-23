@@ -289,6 +289,7 @@ define('dahuapp', [
     * Save the current project
      */
     function saveScreencast(){
+        layoutController.updateCurrentNoteModel();
         screencastController.screencast.save();
     }
 
