@@ -14,12 +14,13 @@ define([
     'views/filmstrip/screens',
     'views/components/main_toolbar',
     'views/components/workspace_toolbar',
+    'views/workspace/note',
     // templates
     'text!templates/modals/tooltip.html'
 ], function (Handlebars, Marionette, // libraries
              Kernel, events, Modals, // modules
              DahuLayout, WorkspaceLayout, // layouts
-             ScreenView, ActionsView, FilmstripScreensView, MainToolbarView, WorkspaceToolbarView, // views
+             ScreenView, ActionsView, FilmstripScreensView, MainToolbarView, WorkspaceToolbarView, NoteView, // views
              tooltipModalTemplate // templates
 ) {
 
@@ -27,6 +28,8 @@ define([
      * Workspace layout controller.
      */
     return Marionette.Controller.extend({
+        
+        currentNoteView: null,
 
         initialize: function(options){
             this.screencast = options.screencast;
@@ -145,6 +148,12 @@ define([
                 screenId: screenId
             }));
 
+            this.currentNoteView = new NoteView({
+                screencast: this.screencast,
+                screenId: screenId
+            })
+            this.workspaceLayout.noteEditor.show(this.currentNoteView);
+
             // keep id
             this._activeScreenId = screenId;
         },
@@ -178,6 +187,10 @@ define([
 
         getActiveScreenId: function() {
             return this._activeScreenId;
+        },
+        
+        updateCurrentNoteModel: function() {
+            this.currentNoteView.updateNoteModel();
         }
     });
 });
