@@ -30,7 +30,6 @@ define([
             "change .trXChoice": "move:trx:change",
             "change .trYChoice": "move:try:change"
         }
-
     });
 
     /**
@@ -62,6 +61,7 @@ define([
             // @note there is maybe a better way to do this (to avoid memory leak)
             this.getRegion('extra').show(new ExtraParamView(this.model));
         }
+
 
     });
 });
