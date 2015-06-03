@@ -95,19 +95,21 @@ define([
                     break;
                 }
                 default:{
-                    /*var filename=this.screencast.model.getProjectFilename();
-                    throw new Exceptions.IOError("this type of action doesn't exist.concerned project #{project}",{
-                    project:filename
-                    });*/
-                    kernel.console.error("this type of action doesn't exist");  
+                    throw new Exceptions.IOError("this type of action doesn't exist.concerned project #{typeAction}",{
+                        typeAction:type
+                    });
+                    //kernel.console.error("this type of action doesn't exist");  
                 }
             }
             //this.$childViewContainer[0].scrollTop=this.$childViewContainer[0].scrollHeight;
         },
         
-        scrollOnAction: function(id){
-           
-            
+        scrollOnAction: function(actionId){
+            var mod=this.collection.findWhere({ id: actionId});
+            Kernel.console.log(mod);
+            var index=this.collection.indexOf(mod);
+            Kernel.console.log("index="+index);
+            this.$childViewContainer[0].children[index].scrollIntoView(false);   
         },
 
         getChildView: function(item){
