@@ -18,7 +18,10 @@ define([
     'views/workspace/objects/mouse',
     'views/workspace/objects/tooltip',
     // templates
-    'text!templates/views/screen.html'
+    'text!templates/views/screen.html',
+    // behaviors
+    'behaviors/workspace/objects/draggable',
+    'modules/kernel/SCI'
 ], function(
     Handlebars,
     Marionette,
@@ -35,7 +38,11 @@ define([
     MouseView,
     TooltipView,
     // templates
-    screenTemplate){
+    screenTemplate,
+    // behaviors
+    DraggableBehavior,
+    Kernel
+) {
 
     /**
      * Workspace screen view
@@ -58,6 +65,31 @@ define([
             this.collection = this.screencast.model.getScreenById(this.screenId).get('objects');
         },
 
+        onAddChild: function(tooltipView) {
+            var self = this;
+
+            Kernel.console.log(this);
+            Kernel.console.log(tooltipView);
+
+            Kernel.console.log("screen scale");
+            Kernel.console.log(self.scale);
+
+            if( tooltipView instanceof TooltipView ) {
+                tooltipView.behaviors.DraggableBehavior = {
+                    behaviorClass: DraggableBehavior,
+                    scale: self.scale
+                };
+
+                tooltipView._behaviors[1].scale = self.scale;
+            }
+
+            Kernel.console.log(this);
+            Kernel.console.log(tooltipView);
+
+            Kernel.console.log("tooltip scale");
+            tooltipView._behaviors[1].scale = self.scale;
+        },
+
         // We select the ChildView depending on the object type.
         getChildView: function(item){
             if(item instanceof ImageModel) {
@@ -72,6 +104,7 @@ define([
         onShow: function() {
             // setup UI
             //@remove var ctrl = reqres.request('app:screencast:controller');
+            var self = this;
 
             this.$('.container').css({
                 //@remove width: ctrl.getScreencastWidth(),
@@ -90,6 +123,8 @@ define([
                 fit.cssTransform(transform, element);
                 // notify listener that workspace was scaled
                 events.trigger('app:workspace:onScaleChanged', transform.scale);
+
+                self.scale = transform.scale;
             });
         },
 

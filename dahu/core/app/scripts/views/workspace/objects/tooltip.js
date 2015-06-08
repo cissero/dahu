@@ -31,6 +31,7 @@ define([
      * Tooltip view
      */
     return ObjectView.extend({
+
         template: Handlebars.default.compile(tooltipTemplate),
 
         className: 'object tooltip ui-widget-content',
