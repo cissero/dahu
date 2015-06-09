@@ -11,8 +11,9 @@ define([
     Handlebars,
     Marionette,
     // templates
-    appearTemplate){
-
+    appearTemplate
+) {
+    
     /**
      * Appear action view
      */
